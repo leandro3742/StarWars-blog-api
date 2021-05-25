@@ -48,7 +48,6 @@ export const createCharacter = async (req: Request, res: Response): Promise<Resp
 }
 
 export const getCharacters = async (req: Request, res: Response): Promise<Response> =>{
-    console.log("Llega");
     const characters = await getRepository(Characters).find();
     return res.json(characters);
 }
@@ -69,6 +68,10 @@ export const createPlanet = async (req: Request, res: Response): Promise<Respons
 
     const newPlanet = getRepository(Planets).create(req.body);  //Creo un pesonaje
 	const results = await getRepository(Planets).save(newPlanet); //Grabo el nuevo personaje 
-    return res.json(results);
-    
+    return res.json(results);   
+}
+
+export const getPlanets = async (req: Request, res: Response): Promise<Response> =>{
+    const planets = await getRepository(Planets).find();
+    return res.json(planets);
 }

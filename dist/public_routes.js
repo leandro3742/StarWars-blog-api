@@ -20,4 +20,5 @@ router.post('/character', utils_1.safe(actions_1.createCharacter));
 router.get('/character', utils_1.safe(actions_1.getCharacters));
 //Planetas
 router.post('/planet', utils_1.safe(actions_1.createPlanet));
+router.get('/planet', utils_1.safe(actions_1.getPlanets));
 exports["default"] = router;
