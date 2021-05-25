@@ -28,23 +28,35 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
 }
 
 export const createCharacter = async (req: Request, res: Response): Promise<Response> =>{
-    console.log("Llega");
-    if(!req.body.name) throw new Exception("Please provide a name")
-	if(!req.body.height) throw new Exception("Please provide a height")
-    if(!req.body.mass) throw new Exception("Please provide a mass")
-    if(!req.body.hair) throw new Exception("Please provide a hair")
-    if(!req.body.skin_color) throw new Exception("Please provide a skin_color")
-    if(!req.body.eye_color) throw new Exception("Please provide a eye_color")
-    if(!req.body.birth_year) throw new Exception("Please provide a birth_year")
-    if(!req.body.gender) throw new Exception("Please provide a gender")
+    const data = new Characters();
     
-    const user = await getRepository(Characters).findOne({ where: {name: req.body.name} });
-    if(user) throw new Exception("User alredy exist");
+    for(let i=0; i< req.body.length; i++){
+        //Casteo el body para quedarme con los elementos que me interesan
+        data.name = req.body[i].name;
+        data.height = req.body[i].height;
+        data.mass = req.body[i].mass;
+        data.hair = req.body[i].hair_color;
+        data.skin_color = req.body[i].skin_color;
+        data.eye_color = req.body[i].eye_color;
+        data.birth_year = req.body[i].birth_year;
+        data.gender = req.body[i].gender;
 
-    const newCharacter = getRepository(Characters).create(req.body);  //Creo un pesonaje
-	const results = await getRepository(Characters).save(newCharacter); //Grabo el nuevo personaje 
-    return res.json(results);
+        if(!data.name) throw new Exception("Please provide a name")
+        if(!data.height) throw new Exception("Please provide a height")
+        if(!data.mass) throw new Exception("Please provide a mass")
+        if(!data.hair) throw new Exception("Please provide a hair")
+        if(!data.skin_color) throw new Exception("Please provide a skin_color")
+        if(!data.eye_color) throw new Exception("Please provide a eye_color")
+        if(!data.birth_year) throw new Exception("Please provide a birth_year")
+        if(!data.gender) throw new Exception("Please provide a gender")
     
+        const user = await getRepository(Characters).findOne({ where: {name: data.name} });
+        if(user) throw new Exception("User alredy exist");
+
+        const newCharacter = getRepository(Characters).create(data);  //Creo un pesonaje
+        const results = await getRepository(Characters).save(newCharacter); //Grabo el nuevo personaje 
+    }
+    return res.json("Ok");
 }
 
 export const getCharacters = async (req: Request, res: Response): Promise<Response> =>{
