@@ -12,8 +12,12 @@ var utils_1 = require("./utils");
 var actions_1 = require("./actions");
 var router = express_1.Router();
 // signup route, creates a new user in the DB
+//Usuario
 router.post('/user', utils_1.safe(actions_1.createUser));
 router.get('/user/:id', utils_1.safe(actions_1.getUsers));
+//Personajes
 router.post('/character', utils_1.safe(actions_1.createCharacter));
+router.get('/character', utils_1.safe(actions_1.getCharacters));
+//Planetas
 router.post('/planet', utils_1.safe(actions_1.createPlanet));
 exports["default"] = router;

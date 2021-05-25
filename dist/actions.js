@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createPlanet = exports.createCharacter = exports.getUsers = exports.createUser = void 0;
+exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var Characters_1 = require("./entities/Characters");
@@ -119,6 +119,20 @@ var createCharacter = function (req, res) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.createCharacter = createCharacter;
+var getCharacters = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var characters;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("Llega");
+                return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).find()];
+            case 1:
+                characters = _a.sent();
+                return [2 /*return*/, res.json(characters)];
+        }
+    });
+}); };
+exports.getCharacters = getCharacters;
 var createPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newPlanet, results;
     return __generator(this, function (_a) {

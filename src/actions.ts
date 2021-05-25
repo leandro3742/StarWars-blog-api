@@ -47,9 +47,13 @@ export const createCharacter = async (req: Request, res: Response): Promise<Resp
     
 }
 
+export const getCharacters = async (req: Request, res: Response): Promise<Response> =>{
+    console.log("Llega");
+    const characters = await getRepository(Characters).find();
+    return res.json(characters);
+}
+
 export const createPlanet = async (req: Request, res: Response): Promise<Response> =>{
-
-
 
     if(!req.body.name) throw new Exception("Please provide a name")
 	if(!req.body.orbital_period) throw new Exception("Please provide a orbital_period")
