@@ -24,33 +24,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.Planet = void 0;
+exports.FavPlanets = void 0;
 var typeorm_1 = require("typeorm");
+var Planets_1 = require("./Planets");
 var Users_1 = require("./Users");
-var Planet = /** @class */ (function (_super) {
-    __extends(Planet, _super);
-    function Planet() {
+var FavPlanets = /** @class */ (function (_super) {
+    __extends(FavPlanets, _super);
+    function FavPlanets() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Planet.prototype, "id");
+    ], FavPlanets.prototype, "favId");
     __decorate([
-        typeorm_1.Column({ unique: true }),
-        __metadata("design:type", String)
-    ], Planet.prototype, "name");
+        typeorm_1.ManyToOne(function () { return Users_1.Users; }, function (user) { return user.FavPlanet; }),
+        __metadata("design:type", Users_1.Users)
+    ], FavPlanets.prototype, "user");
     __decorate([
-        typeorm_1.Column({ nullable: true }),
-        __metadata("design:type", String)
-    ], Planet.prototype, "picture_url");
-    __decorate([
-        typeorm_1.ManyToMany(function () { return Users_1.Users; }, function (user) { return user.planets; }),
-        __metadata("design:type", Array)
-    ], Planet.prototype, "users");
-    Planet = __decorate([
+        typeorm_1.OneToOne(function () { return Planets_1.Planets; }),
+        typeorm_1.JoinColumn(),
+        __metadata("design:type", Planets_1.Planets)
+    ], FavPlanets.prototype, "planet");
+    FavPlanets = __decorate([
         typeorm_1.Entity()
-    ], Planet);
-    return Planet;
+    ], FavPlanets);
+    return FavPlanets;
 }(typeorm_1.BaseEntity));
-exports.Planet = Planet;
+exports.FavPlanets = FavPlanets;

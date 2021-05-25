@@ -20,6 +20,7 @@
     "node-env-file": "^0.1.8",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
+    "tsc": "^2.0.3",
     "tsc-watch": "^4.2.9",
     "typeorm": "^0.2.32"
   },
@@ -42,12 +43,14 @@
     "express-session": "^1.17.1",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
+    "typeorm-uml": "^1.6.3",
     "typescript": "^4.2.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development tsc-watch --project . --onSuccess 'nodemon ./dist/app.js'",
     "build": "rm -rf ./dist && tsc --project ./",
+    "diagram": "tsc && typeorm-uml ormconfig.js",
     "makemigrations": "typeorm migration:generate -n M && npm run build",
     "migrate": "typeorm migration:run"
   },

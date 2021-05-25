@@ -24,46 +24,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.Users = void 0;
+exports.FavCharacters = void 0;
 var typeorm_1 = require("typeorm");
-var FavCharacters_1 = require("./FavCharacters");
-var FavPlanets_1 = require("./FavPlanets");
-var Users = /** @class */ (function (_super) {
-    __extends(Users, _super);
-    function Users() {
+var Characters_1 = require("./Characters");
+var Users_1 = require("./Users");
+var FavCharacters = /** @class */ (function (_super) {
+    __extends(FavCharacters, _super);
+    function FavCharacters() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Users.prototype, "userId");
+    ], FavCharacters.prototype, "favId");
     __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Users.prototype, "first_name");
+        typeorm_1.ManyToOne(function () { return Users_1.Users; }, function (user) { return user.FavCharacter; }),
+        __metadata("design:type", Users_1.Users)
+    ], FavCharacters.prototype, "user");
     __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Users.prototype, "last_name");
-    __decorate([
-        typeorm_1.Column({ unique: true }),
-        __metadata("design:type", String)
-    ], Users.prototype, "email");
-    __decorate([
-        typeorm_1.Column({ unique: true }),
-        __metadata("design:type", String)
-    ], Users.prototype, "password");
-    __decorate([
-        typeorm_1.OneToMany(function () { return FavCharacters_1.FavCharacters; }, function (FavCharacter) { return FavCharacter.user; }),
-        __metadata("design:type", String)
-    ], Users.prototype, "onDelete");
-    __decorate([
-        typeorm_1.OneToMany(function () { return FavPlanets_1.FavPlanets; }, function (FavPlanet) { return FavPlanet.user; }),
-        __metadata("design:type", Array)
-    ], Users.prototype, "FavPlanet");
-    Users = __decorate([
+        typeorm_1.OneToOne(function () { return Characters_1.Characters; }),
+        typeorm_1.JoinColumn(),
+        __metadata("design:type", Characters_1.Characters)
+    ], FavCharacters.prototype, "Character");
+    FavCharacters = __decorate([
         typeorm_1.Entity()
-    ], Users);
-    return Users;
+    ], FavCharacters);
+    return FavCharacters;
 }(typeorm_1.BaseEntity));
-exports.Users = Users;
+exports.FavCharacters = FavCharacters;

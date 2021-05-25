@@ -36,9 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getUsers = exports.createUser = void 0;
+exports.createPlanet = exports.createCharacter = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
+var Characters_1 = require("./entities/Characters");
+var Planets_1 = require("./entities/Planets");
 var utils_1 = require("./utils");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
@@ -70,14 +72,85 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.createUser = createUser;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).find()];
             case 1:
-                users = _a.sent();
-                return [2 /*return*/, res.json(users)];
+                user = _a.sent();
+                return [2 /*return*/, res.json(user)];
         }
     });
 }); };
 exports.getUsers = getUsers;
+var createCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, newCharacter, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("Llega");
+                if (!req.body.name)
+                    throw new utils_1.Exception("Please provide a name");
+                if (!req.body.height)
+                    throw new utils_1.Exception("Please provide a height");
+                if (!req.body.mass)
+                    throw new utils_1.Exception("Please provide a mass");
+                if (!req.body.hair)
+                    throw new utils_1.Exception("Please provide a hair");
+                if (!req.body.skin_color)
+                    throw new utils_1.Exception("Please provide a skin_color");
+                if (!req.body.eye_color)
+                    throw new utils_1.Exception("Please provide a eye_color");
+                if (!req.body.birth_year)
+                    throw new utils_1.Exception("Please provide a birth_year");
+                if (!req.body.gender)
+                    throw new utils_1.Exception("Please provide a gender");
+                return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).findOne({ where: { name: req.body.name } })];
+            case 1:
+                user = _a.sent();
+                if (user)
+                    throw new utils_1.Exception("User alredy exist");
+                newCharacter = typeorm_1.getRepository(Characters_1.Characters).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).save(newCharacter)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createCharacter = createCharacter;
+var createPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, newPlanet, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!req.body.name)
+                    throw new utils_1.Exception("Please provide a name");
+                if (!req.body.orbital_period)
+                    throw new utils_1.Exception("Please provide a orbital_period");
+                if (!req.body.surface_water)
+                    throw new utils_1.Exception("Please provide a surface_water");
+                if (!req.body.gravity)
+                    throw new utils_1.Exception("Please provide a gravity");
+                if (!req.body.population)
+                    throw new utils_1.Exception("Please provide a population");
+                if (!req.body.climate)
+                    throw new utils_1.Exception("Please provide a climate");
+                if (!req.body.terrain)
+                    throw new utils_1.Exception("Please provide a terrain");
+                if (!req.body.diameter)
+                    throw new utils_1.Exception("Please provide a diameter");
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne({ where: { name: req.body.name } })];
+            case 1:
+                user = _a.sent();
+                if (user)
+                    throw new utils_1.Exception("User alredy exist");
+                newPlanet = typeorm_1.getRepository(Planets_1.Planets).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).save(newPlanet)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPlanet = createPlanet;
