@@ -15,6 +15,8 @@ var router = express_1.Router();
 //Usuario
 router.post('/user', utils_1.safe(actions_1.createUser));
 router.get('/user/:id', utils_1.safe(actions_1.getUsers));
+router.post('/user/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
+router.get('/user/character/:user_id', utils_1.safe(actions_1.getFavCharacter));
 //Personajes
 router.post('/character', utils_1.safe(actions_1.createCharacter));
 router.get('/character', utils_1.safe(actions_1.getCharacters));

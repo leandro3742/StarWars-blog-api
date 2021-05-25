@@ -4,7 +4,9 @@ import { Users } from './entities/Users'
 import { Characters } from './entities/Characters';
 import { Planets } from './entities/Planets';
 import { Exception } from './utils'
+import { FavCharacters } from './entities/FavCharacters';
 
+////  USERS ////
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
 
 	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
@@ -23,10 +25,30 @@ export const createUser = async (req: Request, res:Response): Promise<Response> 
 }
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
-		const user = await getRepository(Users).find();
-		return res.json(user);
+    const user = await getRepository(Users).find();
+    return res.json(user);
 }
 
+export const createFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
+    // req.params.user_id
+    // req.params.character_id
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("The user not exists ")
+    const character = await getRepository(Characters).findOne(req.params.character_id);
+    if(!character) throw new Exception("The character not exist");
+
+    const newFavCharacter = getRepository(FavCharacters).create(req.body);  //Creo un Personaje favorito
+	const results = await getRepository(FavCharacters).save(newFavCharacter); //Grabo el nuevo Personaje favorito
+	return res.json(results);
+}
+
+export const getFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
+    // req.params.user_id
+    const list = await getRepository(FavCharacters).find({ where: {user: req.params.user_id} });
+    return res.json(list);
+}
+
+////  CHARACTERS ////
 export const createCharacter = async (req: Request, res: Response): Promise<Response> =>{
     const data = new Characters();
     
@@ -68,7 +90,6 @@ export const createPlanet = async (req: Request, res: Response): Promise<Respons
     const data = new Planets();
     console.log(req.body);
     for(let i=0; i< req.body.length; i++){
-        console.log("entra");
         data.name = req.body[i].name;
         data.rotation_period = req.body[i].rotation_period;
         data.orbital_period = req.body[i].orbital_period;
@@ -78,7 +99,7 @@ export const createPlanet = async (req: Request, res: Response): Promise<Respons
         data.climate = req.body[i].climate;
         data.terrain = req.body[i].terrain;
         data.diameter = req.body[i].diameter;
-        console.log(data);
+
         if(!data.name) throw new Exception("Please provide a name")
         if(!data.orbital_period) throw new Exception("Please provide a orbital_period")
         if(!data.surface_water) throw new Exception("Please provide a surface_water")
