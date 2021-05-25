@@ -132,36 +132,60 @@ var getCharacters = function (req, res) { return __awaiter(void 0, void 0, void 
 }); };
 exports.getCharacters = getCharacters;
 var createPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newPlanet, results;
+    var data, i, user, newPlanet, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!req.body.name)
-                    throw new utils_1.Exception("Please provide a name");
-                if (!req.body.orbital_period)
-                    throw new utils_1.Exception("Please provide a orbital_period");
-                if (!req.body.surface_water)
-                    throw new utils_1.Exception("Please provide a surface_water");
-                if (!req.body.gravity)
-                    throw new utils_1.Exception("Please provide a gravity");
-                if (!req.body.population)
-                    throw new utils_1.Exception("Please provide a population");
-                if (!req.body.climate)
-                    throw new utils_1.Exception("Please provide a climate");
-                if (!req.body.terrain)
-                    throw new utils_1.Exception("Please provide a terrain");
-                if (!req.body.diameter)
-                    throw new utils_1.Exception("Please provide a diameter");
-                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne({ where: { name: req.body.name } })];
+                data = new Planets_1.Planets();
+                console.log(req.body);
+                i = 0;
+                _a.label = 1;
             case 1:
+                if (!(i < req.body.length)) return [3 /*break*/, 5];
+                console.log("entra");
+                data.name = req.body[i].name;
+                data.rotation_period = req.body[i].rotation_period;
+                data.orbital_period = req.body[i].orbital_period;
+                data.surface_water = req.body[i].surface_water;
+                data.gravity = req.body[i].gravity;
+                data.population = req.body[i].population;
+                data.climate = req.body[i].climate;
+                data.terrain = req.body[i].terrain;
+                data.diameter = req.body[i].diameter;
+                console.log(data);
+                if (!data.name)
+                    throw new utils_1.Exception("Please provide a name");
+                if (!data.orbital_period)
+                    throw new utils_1.Exception("Please provide a orbital_period");
+                if (!data.surface_water)
+                    throw new utils_1.Exception("Please provide a surface_water");
+                if (!data.gravity)
+                    throw new utils_1.Exception("Please provide a gravity");
+                if (!data.population)
+                    throw new utils_1.Exception("Please provide a population");
+                if (!data.climate)
+                    throw new utils_1.Exception("Please provide a climate");
+                if (!data.terrain)
+                    throw new utils_1.Exception("Please provide a terrain");
+                if (!data.diameter)
+                    throw new utils_1.Exception("Please provide a diameter");
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne({ where: { name: data.name } })];
+            case 2:
                 user = _a.sent();
                 if (user)
                     throw new utils_1.Exception("User alredy exist");
-                newPlanet = typeorm_1.getRepository(Planets_1.Planets).create(req.body);
+                newPlanet = typeorm_1.getRepository(Planets_1.Planets).create(data);
                 return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).save(newPlanet)];
-            case 2:
+            case 3:
                 results = _a.sent();
-                return [2 /*return*/, res.json(results)];
+                console.log(results);
+                _a.label = 4;
+            case 4:
+                i++;
+                return [3 /*break*/, 1];
+            case 5:
+                ;
+                return [2 /*return*/, res.json("Ok")];
         }
     });
 }); };

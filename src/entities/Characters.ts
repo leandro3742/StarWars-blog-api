@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, JoinColumn } from "typeorm";
+import { FavCharacters } from "./FavCharacters";
 
 @Entity()
 export class Characters extends BaseEntity{
@@ -28,5 +29,5 @@ export class Characters extends BaseEntity{
 
     @Column()
     gender: string;
-    
+
 }

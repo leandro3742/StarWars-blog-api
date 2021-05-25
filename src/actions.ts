@@ -53,22 +53,38 @@ export const getCharacters = async (req: Request, res: Response): Promise<Respon
 }
 
 export const createPlanet = async (req: Request, res: Response): Promise<Response> =>{
+    const data = new Planets();
+    console.log(req.body);
+    for(let i=0; i< req.body.length; i++){
+        console.log("entra");
+        data.name = req.body[i].name;
+        data.rotation_period = req.body[i].rotation_period;
+        data.orbital_period = req.body[i].orbital_period;
+        data.surface_water = req.body[i].surface_water;
+        data.gravity = req.body[i].gravity;
+        data.population =req.body[i].population;
+        data.climate = req.body[i].climate;
+        data.terrain = req.body[i].terrain;
+        data.diameter = req.body[i].diameter;
+        console.log(data);
+        if(!data.name) throw new Exception("Please provide a name")
+        if(!data.orbital_period) throw new Exception("Please provide a orbital_period")
+        if(!data.surface_water) throw new Exception("Please provide a surface_water")
+        if(!data.gravity) throw new Exception("Please provide a gravity")
+        if(!data.population) throw new Exception("Please provide a population")
+        if(!data.climate) throw new Exception("Please provide a climate")
+        if(!data.terrain) throw new Exception("Please provide a terrain")
+        if(!data.diameter) throw new Exception("Please provide a diameter")
 
-    if(!req.body.name) throw new Exception("Please provide a name")
-	if(!req.body.orbital_period) throw new Exception("Please provide a orbital_period")
-    if(!req.body.surface_water) throw new Exception("Please provide a surface_water")
-    if(!req.body.gravity) throw new Exception("Please provide a gravity")
-    if(!req.body.population) throw new Exception("Please provide a population")
-    if(!req.body.climate) throw new Exception("Please provide a climate")
-    if(!req.body.terrain) throw new Exception("Please provide a terrain")
-    if(!req.body.diameter) throw new Exception("Please provide a diameter")
-    
-    const user = await getRepository(Planets).findOne({ where: {name: req.body.name} });
-    if(user) throw new Exception("User alredy exist");
+        const user = await getRepository(Planets).findOne({ where: {name: data.name} });
+        if(user) throw new Exception("User alredy exist");
 
-    const newPlanet = getRepository(Planets).create(req.body);  //Creo un pesonaje
-	const results = await getRepository(Planets).save(newPlanet); //Grabo el nuevo personaje 
-    return res.json(results);   
+        const newPlanet = getRepository(Planets).create(data);  //Creo un pesonaje
+        const results = await getRepository(Planets).save(newPlanet); //Grabo el nuevo personaje
+        console.log(results);
+    };
+
+        return res.json("Ok");   
 }
 
 export const getPlanets = async (req: Request, res: Response): Promise<Response> =>{
