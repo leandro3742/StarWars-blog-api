@@ -36,15 +36,23 @@ export const createFavCharacter = async (req: Request, res: Response): Promise<R
     if(!user) throw new Exception("The user not exists ")
     const character = await getRepository(Characters).findOne(req.params.character_id);
     if(!character) throw new Exception("The character not exist");
+    console.log(user);  
+    
+    const newFav = new FavCharacters();
+    newFav.user = user;
+    newFav.Character = character;
 
-    const newFavCharacter = getRepository(FavCharacters).create(req.body);  //Creo un Personaje favorito
+    const newFavCharacter = getRepository(FavCharacters).create(newFav);  //Creo un Personaje favorito
 	const results = await getRepository(FavCharacters).save(newFavCharacter); //Grabo el nuevo Personaje favorito
 	return res.json(results);
 }
 
 export const getFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
-    // req.params.user_id
-    const list = await getRepository(FavCharacters).find({ where: {user: req.params.user_id} });
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("User not found");
+    console.log(user);
+    const list = await getRepository(FavCharacters).find({ where: {user: user}, relations:['Character'] });
+    console.log(list);
     return res.json(list);
 }
 

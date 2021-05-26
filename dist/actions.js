@@ -86,7 +86,7 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
 }); };
 exports.getUsers = getUsers;
 var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, character, newFavCharacter, results;
+    var user, character, newFav, newFavCharacter, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
@@ -99,7 +99,11 @@ var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, 
                 character = _a.sent();
                 if (!character)
                     throw new utils_1.Exception("The character not exist");
-                newFavCharacter = typeorm_1.getRepository(FavCharacters_1.FavCharacters).create(req.body);
+                console.log(user);
+                newFav = new FavCharacters_1.FavCharacters();
+                newFav.user = user;
+                newFav.Character = character;
+                newFavCharacter = typeorm_1.getRepository(FavCharacters_1.FavCharacters).create(newFav);
                 return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).save(newFavCharacter)];
             case 3:
                 results = _a.sent();
@@ -109,12 +113,19 @@ var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, 
 }); };
 exports.createFavCharacter = createFavCharacter;
 var getFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var list;
+    var user, list;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).find({ where: { user: req.params.user_id } })];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
             case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User not found");
+                console.log(user);
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).find({ where: { user: user }, relations: ['Character'] })];
+            case 2:
                 list = _a.sent();
+                console.log(list);
                 return [2 /*return*/, res.json(list)];
         }
     });
