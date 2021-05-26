@@ -14,11 +14,7 @@ var router = express_1.Router();
 // signup route, creates a new user in the DB
 //Usuario
 router.post('/user', utils_1.safe(actions_1.createUser));
-router.get('/user/:id', utils_1.safe(actions_1.getUsers));
-router.post('/user/character/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
-router.get('/user/character/:user_id', utils_1.safe(actions_1.getFavCharacter));
-router.post('/user/planet/:user_id/:planet_id', utils_1.safe(actions_1.createFavPlanet));
-router.get('/user/planet/:user_id', utils_1.safe(actions_1.getFavPlanet));
+router.post('/login', utils_1.safe(actions_1.login));
 //Personajes
 router.post('/people', utils_1.safe(actions_1.createCharacter));
 router.get('/people', utils_1.safe(actions_1.getCharacters));

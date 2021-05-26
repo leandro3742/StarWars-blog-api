@@ -38,6 +38,7 @@ var express_1 = require("express");
 var utils_1 = require("./utils");
 var actions = __importStar(require("./actions"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var actions_1 = require("./actions");
 // declare a new router to include all the endpoints
 var router = express_1.Router();
 //middleware de verificación
@@ -51,4 +52,9 @@ var verifyToken = function (req, res, next) {
     next();
 };
 router.get('/user', verifyToken, utils_1.safe(actions.getUsers));
+router.get('/user/:id', verifyToken, utils_1.safe(actions_1.getUsers));
+router.post('/user/character/:user_id/:character_id', verifyToken, utils_1.safe(actions_1.createFavCharacter));
+router.get('/user/character/:user_id', verifyToken, utils_1.safe(actions_1.getFavCharacter));
+router.post('/user/planet/:user_id/:planet_id', verifyToken, utils_1.safe(actions_1.createFavPlanet));
+router.get('/user/planet/:user_id', verifyToken, utils_1.safe(actions_1.getFavPlanet));
 exports["default"] = router;
