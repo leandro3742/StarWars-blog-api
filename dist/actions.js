@@ -330,11 +330,17 @@ var createPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0
 }); };
 exports.createPlanet = createPlanet;
 var getPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planets;
+    var planets, planets;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).find()];
+            case 0:
+                if (!req.params.id) return [3 /*break*/, 2];
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne(req.params.id)];
             case 1:
+                planets = _a.sent();
+                return [2 /*return*/, res.json(planets)];
+            case 2: return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).find()];
+            case 3:
                 planets = _a.sent();
                 return [2 /*return*/, res.json(planets)];
         }

@@ -27,7 +27,8 @@ router.get('/people/:id', safe(getCharacters))
 
 //Planetas
 router.post('/planet', safe(createPlanet))
-router.get('/planet', safe(getPlanets))
+router.get('/planet/:id', safe(getPlanets))
+router.get('/planets', safe(getPlanets))
 
 
 export default router;

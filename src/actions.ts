@@ -179,6 +179,13 @@ export const createPlanet = async (req: Request, res: Response): Promise<Respons
 }
 
 export const getPlanets = async (req: Request, res: Response): Promise<Response> =>{
-    const planets = await getRepository(Planets).find();
-    return res.json(planets);
+    if(req.params.id){
+        const planets = await getRepository(Planets).findOne(req.params.id);
+        return res.json(planets);
+    }
+    else{
+        const planets = await getRepository(Planets).find();
+        return res.json(planets);   
+    }
+    
 }
