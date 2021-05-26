@@ -21,8 +21,9 @@ router.get('/user/character/:user_id', safe(getFavCharacter));
 router.post('/user/planet/:user_id/:planet_id', safe(createFavPlanet));
 router.get('/user/planet/:user_id', safe(getFavPlanet));
 //Personajes
-router.post('/character', safe(createCharacter))
-router.get('/character', safe(getCharacters))
+router.post('/people', safe(createCharacter))
+router.get('/people', safe(getCharacters))
+router.get('/people/:id', safe(getCharacters))
 
 //Planetas
 router.post('/planet', safe(createPlanet))

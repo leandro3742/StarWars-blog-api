@@ -134,8 +134,14 @@ export const createCharacter = async (req: Request, res: Response): Promise<Resp
 }
 
 export const getCharacters = async (req: Request, res: Response): Promise<Response> =>{
-    const characters = await getRepository(Characters).find();
-    return res.json(characters);
+    if(req.params.id){ //Significa que elije un personaje
+        const characters = await getRepository(Characters).findOne(req.params.id);
+        return res.json(characters);
+    }
+    else{
+        const characters = await getRepository(Characters).find();
+        return res.json(characters);
+    }
 }
 
 export const createPlanet = async (req: Request, res: Response): Promise<Response> =>{

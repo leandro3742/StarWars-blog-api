@@ -35,9 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.getUsers = exports.createUser = void 0;
+exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.login = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var Users_1 = require("./entities/Users");
 var Characters_1 = require("./entities/Characters");
 var Planets_1 = require("./entities/Planets");
@@ -86,6 +90,28 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+//controlador para el logueo
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!req.body.email)
+                    throw new utils_1.Exception("Please specify an email on your request body", 400);
+                if (!req.body.password)
+                    throw new utils_1.Exception("Please specify a password on your request body", 400);
+                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne({ where: { email: req.body.email, password: req.body.password } })];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("Invalid email or password", 401);
+                token = jsonwebtoken_1["default"].sign({ user: user }, process.env.JWT_KEY, { expiresIn: 60 * 60 });
+                // return the user and the recently created token to the client
+                return [2 /*return*/, res.json({ user: user, token: token })];
+        }
+    });
+}); };
+exports.login = login;
 //// FAV CHARACTERS ////
 var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, character, newFav, newFavCharacter, results;
@@ -229,11 +255,17 @@ var createCharacter = function (req, res) { return __awaiter(void 0, void 0, voi
 }); };
 exports.createCharacter = createCharacter;
 var getCharacters = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var characters;
+    var characters, characters;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).find()];
+            case 0:
+                if (!req.params.id) return [3 /*break*/, 2];
+                return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).findOne(req.params.id)];
             case 1:
+                characters = _a.sent();
+                return [2 /*return*/, res.json(characters)];
+            case 2: return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).find()];
+            case 3:
                 characters = _a.sent();
                 return [2 /*return*/, res.json(characters)];
         }
