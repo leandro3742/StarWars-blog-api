@@ -15,8 +15,10 @@ var router = express_1.Router();
 //Usuario
 router.post('/user', utils_1.safe(actions_1.createUser));
 router.get('/user/:id', utils_1.safe(actions_1.getUsers));
-router.post('/user/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
+router.post('/user/character/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
 router.get('/user/character/:user_id', utils_1.safe(actions_1.getFavCharacter));
+router.post('/user/planet/:user_id/:planet_id', utils_1.safe(actions_1.createFavPlanet));
+router.get('/user/planet/:user_id', utils_1.safe(actions_1.getFavPlanet));
 //Personajes
 router.post('/character', utils_1.safe(actions_1.createCharacter));
 router.get('/character', utils_1.safe(actions_1.getCharacters));

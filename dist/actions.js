@@ -36,13 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavCharacter = exports.createFavCharacter = exports.getUsers = exports.createUser = void 0;
+exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var Characters_1 = require("./entities/Characters");
 var Planets_1 = require("./entities/Planets");
 var utils_1 = require("./utils");
 var FavCharacters_1 = require("./entities/FavCharacters");
+var FavPlanets_1 = require("./entities/FavPlanets");
 ////  USERS ////
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
@@ -85,6 +86,7 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+//// FAV CHARACTERS ////
 var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, character, newFav, newFavCharacter, results;
     return __generator(this, function (_a) {
@@ -99,7 +101,6 @@ var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, 
                 character = _a.sent();
                 if (!character)
                     throw new utils_1.Exception("The character not exist");
-                console.log(user);
                 newFav = new FavCharacters_1.FavCharacters();
                 newFav.user = user;
                 newFav.Character = character;
@@ -121,16 +122,58 @@ var getFavCharacter = function (req, res) { return __awaiter(void 0, void 0, voi
                 user = _a.sent();
                 if (!user)
                     throw new utils_1.Exception("User not found");
-                console.log(user);
                 return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).find({ where: { user: user }, relations: ['Character'] })];
             case 2:
                 list = _a.sent();
-                console.log(list);
                 return [2 /*return*/, res.json(list)];
         }
     });
 }); };
 exports.getFavCharacter = getFavCharacter;
+//// FAV PLANETS ////
+var createFavPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, planet, newFav, newFavPlanet, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("The user not exists ");
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne(req.params.planet_id)];
+            case 2:
+                planet = _a.sent();
+                if (!planet)
+                    throw new utils_1.Exception("The planet not exist");
+                newFav = new FavPlanets_1.FavPlanets();
+                newFav.user = user;
+                newFav.planet = planet;
+                newFavPlanet = typeorm_1.getRepository(FavPlanets_1.FavPlanets).create(newFav);
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).save(newFavPlanet)];
+            case 3:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createFavPlanet = createFavPlanet;
+var getFavPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, list;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User not found");
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).find({ where: { user: user }, relations: ['planet'] })];
+            case 2:
+                list = _a.sent();
+                return [2 /*return*/, res.json(list)];
+        }
+    });
+}); };
+exports.getFavPlanet = getFavPlanet;
 ////  CHARACTERS ////
 var createCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var data, i, user, newCharacter, results;

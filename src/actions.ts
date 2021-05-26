@@ -5,6 +5,7 @@ import { Characters } from './entities/Characters';
 import { Planets } from './entities/Planets';
 import { Exception } from './utils'
 import { FavCharacters } from './entities/FavCharacters';
+import { FavPlanets } from './entities/FavPlanets';
 
 ////  USERS ////
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
@@ -28,7 +29,7 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
     const user = await getRepository(Users).find();
     return res.json(user);
 }
-
+//// FAV CHARACTERS ////
 export const createFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
     // req.params.user_id
     // req.params.character_id
@@ -36,7 +37,6 @@ export const createFavCharacter = async (req: Request, res: Response): Promise<R
     if(!user) throw new Exception("The user not exists ")
     const character = await getRepository(Characters).findOne(req.params.character_id);
     if(!character) throw new Exception("The character not exist");
-    console.log(user);  
     
     const newFav = new FavCharacters();
     newFav.user = user;
@@ -50,9 +50,33 @@ export const createFavCharacter = async (req: Request, res: Response): Promise<R
 export const getFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
     const user = await getRepository(Users).findOne(req.params.user_id);
     if(!user) throw new Exception("User not found");
-    console.log(user);
+
     const list = await getRepository(FavCharacters).find({ where: {user: user}, relations:['Character'] });
-    console.log(list);
+    return res.json(list);
+}
+//// FAV PLANETS ////
+export const createFavPlanet = async (req: Request, res: Response): Promise<Response> =>{
+    // req.params.user_id
+    // req.params.planet_id
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("The user not exists ")
+    const planet = await getRepository(Planets).findOne(req.params.planet_id);
+    if(!planet) throw new Exception("The planet not exist");
+    
+    const newFav = new FavPlanets();
+    newFav.user = user;
+    newFav.planet = planet;
+
+    const newFavPlanet = getRepository(FavPlanets).create(newFav);  //Creo un Planeta favorito
+	const results = await getRepository(FavPlanets).save(newFavPlanet); //Grabo el nuevo Planeta favorito
+	return res.json(results);
+}
+
+export const getFavPlanet = async (req: Request, res: Response): Promise<Response> =>{
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("User not found");
+
+    const list = await getRepository(FavPlanets).find({ where: {user: user}, relations:['planet'] });
     return res.json(list);
 }
 

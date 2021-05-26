@@ -8,7 +8,7 @@
  */
 import { Router } from 'express';
 import { safe } from './utils';
-import { createUser, getUsers, createFavCharacter, getFavCharacter, createCharacter, getCharacters, createPlanet, getPlanets } from './actions';
+import { createUser, getUsers, createFavCharacter, getFavCharacter, createFavPlanet, getFavPlanet, createCharacter, getCharacters, createPlanet, getPlanets } from './actions';
 
 const router = Router();
 
@@ -16,8 +16,10 @@ const router = Router();
 //Usuario
 router.post('/user', safe(createUser));
 router.get('/user/:id', safe(getUsers));
-router.post('/user/:user_id/:character_id', safe(createFavCharacter));
+router.post('/user/character/:user_id/:character_id', safe(createFavCharacter));
 router.get('/user/character/:user_id', safe(getFavCharacter));
+router.post('/user/planet/:user_id/:planet_id', safe(createFavPlanet));
+router.get('/user/planet/:user_id', safe(getFavPlanet));
 //Personajes
 router.post('/character', safe(createCharacter))
 router.get('/character', safe(getCharacters))
