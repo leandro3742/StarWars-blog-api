@@ -86,6 +86,22 @@ export const getFavCharacter = async (req: Request, res: Response): Promise<Resp
     const list = await getRepository(FavCharacters).find({ where: {user: user}, relations:['Character'] });
     return res.json(list);
 }
+
+export const removeFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
+    // req.params.user_id
+    // req.params.character_id
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("The user not exists ")
+    const character = await getRepository(Characters).findOne(req.params.character_id);
+    if(!character) throw new Exception("The character not exist");
+
+    const FavCharacter = await getRepository(FavCharacters).find({ where: {Character: character} });
+
+    const newFavCharacter = getRepository(FavCharacters).remove(FavCharacter);  //Creo un Personaje favorito
+	// const results = await getRepository(FavCharacters).save(newFavCharacter); //Grabo el nuevo Personaje favorito
+	return res.json("The character was deleted");
+}
+
 //// FAV PLANETS ////
 export const createFavPlanet = async (req: Request, res: Response): Promise<Response> =>{
     // req.params.user_id
@@ -110,6 +126,18 @@ export const getFavPlanet = async (req: Request, res: Response): Promise<Respons
 
     const list = await getRepository(FavPlanets).find({ where: {user: user}, relations:['planet'] });
     return res.json(list);
+}
+
+export const removeFavPlanet = async (req: Request, res: Response): Promise<Response> =>{
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("The user not exists ")
+    const planet = await getRepository(Planets).findOne(req.params.planet_id);
+    if(!planet) throw new Exception("The planet not exist");
+
+    const FavPlanet = await getRepository(FavPlanets).find({ where: {planet: planet} });
+
+    const newFavPlanet = getRepository(FavPlanets).remove(FavPlanet);
+	return res.json("The planet was deleted");
 }
 
 ////  CHARACTERS ////

@@ -10,6 +10,7 @@ exports.__esModule = true;
 var express_1 = require("express");
 var utils_1 = require("./utils");
 var actions_1 = require("./actions");
+var actions_2 = require("./actions");
 var router = express_1.Router();
 // signup route, creates a new user in the DB
 //Usuario
@@ -26,7 +27,8 @@ router.get('/planets', utils_1.safe(actions_1.getPlanets));
 router.get('/user/:id', utils_1.safe(actions_1.getUsers));
 router.post('/user/character/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
 router.post('/user/planet/:user_id/:planet_id', utils_1.safe(actions_1.createFavPlanet));
-router.get('/user/:user_id/favorites', utils_1.safe(actions_1.getFav));
 router.get('/user/planet/:user_id', utils_1.safe(actions_1.getFavPlanet));
 router.get('/user/character/:user_id', utils_1.safe(actions_1.getFavCharacter));
+router["delete"]('/user/character/:user_id/:character_id', utils_1.safe(actions_2.removeFavCharacter));
+router["delete"]('/user/planet/:user_id/:planet_id', utils_1.safe(actions_2.removeFavPlanet));
 exports["default"] = router;

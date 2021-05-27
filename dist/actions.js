@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.getFav = exports.login = exports.getUsers = exports.createUser = void 0;
+exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.removeFavPlanet = exports.getFavPlanet = exports.createFavPlanet = exports.removeFavCharacter = exports.getFavCharacter = exports.createFavCharacter = exports.getFav = exports.login = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var Users_1 = require("./entities/Users");
@@ -179,6 +179,30 @@ var getFavCharacter = function (req, res) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.getFavCharacter = getFavCharacter;
+var removeFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, character, FavCharacter, newFavCharacter;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("The user not exists ");
+                return [4 /*yield*/, typeorm_1.getRepository(Characters_1.Characters).findOne(req.params.character_id)];
+            case 2:
+                character = _a.sent();
+                if (!character)
+                    throw new utils_1.Exception("The character not exist");
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).find({ where: { Character: character } })];
+            case 3:
+                FavCharacter = _a.sent();
+                newFavCharacter = typeorm_1.getRepository(FavCharacters_1.FavCharacters).remove(FavCharacter);
+                // const results = await getRepository(FavCharacters).save(newFavCharacter); //Grabo el nuevo Personaje favorito
+                return [2 /*return*/, res.json("The character was deleted")];
+        }
+    });
+}); };
+exports.removeFavCharacter = removeFavCharacter;
 //// FAV PLANETS ////
 var createFavPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, planet, newFav, newFavPlanet, results;
@@ -223,6 +247,29 @@ var getFavPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 exports.getFavPlanet = getFavPlanet;
+var removeFavPlanet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, planet, FavPlanet, newFavPlanet;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("The user not exists ");
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne(req.params.planet_id)];
+            case 2:
+                planet = _a.sent();
+                if (!planet)
+                    throw new utils_1.Exception("The planet not exist");
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).find({ where: { planet: planet } })];
+            case 3:
+                FavPlanet = _a.sent();
+                newFavPlanet = typeorm_1.getRepository(FavPlanets_1.FavPlanets).remove(FavPlanet);
+                return [2 /*return*/, res.json("The planet was deleted")];
+        }
+    });
+}); };
+exports.removeFavPlanet = removeFavPlanet;
 ////  CHARACTERS ////
 var createCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var data, i, user, newCharacter, results;

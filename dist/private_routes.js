@@ -57,5 +57,5 @@ router.post('/user/character/:user_id/:character_id', verifyToken, utils_1.safe(
 router.get('/user/character/:user_id', verifyToken, utils_1.safe(actions_1.getFavCharacter));
 router.post('/user/planet/:user_id/:planet_id', verifyToken, utils_1.safe(actions_1.createFavPlanet));
 router.get('/user/planet/:user_id', verifyToken, utils_1.safe(actions_1.getFavPlanet));
-// router.get('/user/:user_id/favorites', verifyToken, safe(getFav));
+router.get('/user/:user_id/favorites', verifyToken, utils_1.safe(actions_1.getFav));
 exports["default"] = router;
