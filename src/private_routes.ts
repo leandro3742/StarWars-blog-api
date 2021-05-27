@@ -15,7 +15,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { safe } from './utils';
 import * as actions from './actions';
 import jwt from 'jsonwebtoken'
-import { getUsers, createFavCharacter, getFavCharacter, createFavPlanet, getFavPlanet, getFav } from './actions';
+import { getUsers, createFavCharacter, getFavCharacter, createFavPlanet, getFavPlanet, getFav, removeFavCharacter, removeFavPlanet } from './actions';
 
 // declare a new router to include all the endpoints
 const router = Router();
@@ -40,5 +40,8 @@ router.get('/user/character/:user_id', verifyToken, safe(getFavCharacter));
 router.post('/user/planet/:user_id/:planet_id', verifyToken, safe(createFavPlanet));
 router.get('/user/planet/:user_id', verifyToken, safe(getFavPlanet));
 router.get('/user/:user_id/favorites', verifyToken, safe(getFav));
+
+router.delete('/user/character/:user_id/:character_id', verifyToken, safe(removeFavCharacter));
+router.delete('/user/planet/:user_id/:planet_id', verifyToken, safe(removeFavPlanet));
 
 export default router;

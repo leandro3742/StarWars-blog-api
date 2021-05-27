@@ -10,7 +10,7 @@ exports.__esModule = true;
 var express_1 = require("express");
 var utils_1 = require("./utils");
 var actions_1 = require("./actions");
-var actions_2 = require("./actions");
+// import {  getFavCharacter, getFavPlanet, getUsers, createFavCharacter, createFavPlanet, getFav, removeFavCharacter, removeFavPlanet } from './actions';
 var router = express_1.Router();
 // signup route, creates a new user in the DB
 //Usuario
@@ -24,11 +24,9 @@ router.get('/people/:id', utils_1.safe(actions_1.getCharacters));
 router.post('/planet', utils_1.safe(actions_1.createPlanet));
 router.get('/planet/:id', utils_1.safe(actions_1.getPlanets));
 router.get('/planets', utils_1.safe(actions_1.getPlanets));
-router.get('/user/:id', utils_1.safe(actions_1.getUsers));
-router.post('/user/character/:user_id/:character_id', utils_1.safe(actions_1.createFavCharacter));
-router.post('/user/planet/:user_id/:planet_id', utils_1.safe(actions_1.createFavPlanet));
-router.get('/user/planet/:user_id', utils_1.safe(actions_1.getFavPlanet));
-router.get('/user/character/:user_id', utils_1.safe(actions_1.getFavCharacter));
-router["delete"]('/user/character/:user_id/:character_id', utils_1.safe(actions_2.removeFavCharacter));
-router["delete"]('/user/planet/:user_id/:planet_id', utils_1.safe(actions_2.removeFavPlanet));
+// router.get('/user/:id', safe(getUsers));
+// router.post('/user/character/:user_id/:character_id', safe(createFavCharacter));
+// router.post('/user/planet/:user_id/:planet_id', safe(createFavPlanet));
+// router.get('/user/planet/:user_id', safe(getFavPlanet));
+// router.get('/user/character/:user_id', safe(getFavCharacter));
 exports["default"] = router;

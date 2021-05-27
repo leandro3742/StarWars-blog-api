@@ -58,4 +58,6 @@ router.get('/user/character/:user_id', verifyToken, utils_1.safe(actions_1.getFa
 router.post('/user/planet/:user_id/:planet_id', verifyToken, utils_1.safe(actions_1.createFavPlanet));
 router.get('/user/planet/:user_id', verifyToken, utils_1.safe(actions_1.getFavPlanet));
 router.get('/user/:user_id/favorites', verifyToken, utils_1.safe(actions_1.getFav));
+router["delete"]('/user/character/:user_id/:character_id', verifyToken, utils_1.safe(actions_1.removeFavCharacter));
+router["delete"]('/user/planet/:user_id/:planet_id', verifyToken, utils_1.safe(actions_1.removeFavPlanet));
 exports["default"] = router;
