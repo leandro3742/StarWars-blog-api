@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.login = exports.getUsers = exports.createUser = void 0;
+exports.getPlanets = exports.createPlanet = exports.getCharacters = exports.createCharacter = exports.getFavPlanet = exports.createFavPlanet = exports.getFavCharacter = exports.createFavCharacter = exports.getFav = exports.login = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var Users_1 = require("./entities/Users");
@@ -112,6 +112,29 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 exports.login = login;
+var getFav = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, characters, planets, list;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(req.params.user_id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User not found");
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacters_1.FavCharacters).find({ where: { user: user }, relations: ['Character'] })];
+            case 2:
+                characters = _a.sent();
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).find({ where: { user: user }, relations: ['planet'] })];
+            case 3:
+                planets = _a.sent();
+                list = [];
+                list[0] = characters;
+                list[1] = planets;
+                return [2 /*return*/, res.json(list)];
+        }
+    });
+}); };
+exports.getFav = getFav;
 //// FAV CHARACTERS ////
 var createFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, character, newFav, newFavCharacter, results;

@@ -49,6 +49,18 @@ export const login = async (req: Request, res: Response): Promise<Response> =>{
 	// return the user and the recently created token to the client
 	return res.json({ user, token });
 }
+
+export const getFav = async (req: Request, res: Response): Promise<Response> =>{
+    const user = await getRepository(Users).findOne(req.params.user_id);
+    if(!user) throw new Exception("User not found");
+
+    const characters = await getRepository(FavCharacters).find({ where: {user: user}, relations:['Character'] });
+    const planets = await getRepository(FavPlanets).find({ where: {user: user}, relations:['planet'] })
+    const list = [];
+    list[0] = characters;
+    list[1] = planets;
+    return res.json(list);
+}
 //// FAV CHARACTERS ////
 export const createFavCharacter = async (req: Request, res: Response): Promise<Response> =>{
     // req.params.user_id
